@@ -1,25 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Container, CssBaseline } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import endpoints from './api/endpoints';
+import NewPostItem from './Pages/CreatePostPage';
+import PostItemDetail from './features/post/ViewPost';
+import Header from './layout/Header';
+import { PostItem } from './models/post';
+import Home from './Pages/Home';
+import PostDetailPage from './Pages/PostDetailPage';
+
+
+
 
 function App() {
+  const[posts, setPosts] = useState<PostItem[]>([]);
+
+  
+  
+  // <Home posts={posts} />
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <CssBaseline />
+    <Header />
+    <Container>
+    <Routes>
+    <Route path="/" element={<Home />} />
+    <Route path="/post" element={<NewPostItem  />} />
+    <Route path="/posts/:id" element={<PostDetailPage />} />
+  </Routes>
+
+    </Container>
+    </>
   );
 }
 
