@@ -1,9 +1,7 @@
-import { LoadingButton } from "@mui/lab";
-import { Container, Paper, Box, Typography, Button, TextField, Grid, ButtonGroup, Card, CardActions, CardContent, IconButton } from "@mui/material";
-import { useState, useEffect, ChangeEvent } from "react";
+import { Container, Paper, Box, Typography, Button, TextField, Card, CardActions, CardContent, Alert, Snackbar } from "@mui/material";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import shallow from "zustand/shallow";
 import endpoints from "../../api/endpoints";
 import { PostItem } from "../../models/post";
@@ -19,6 +17,23 @@ const [post, setPost] = useState({
     body:'',
     userId:0,
 });
+
+const [open, setOpen] = useState(false);
+
+const handleClick = () => {
+  setOpen(true);
+};
+
+const handleClose = (
+  event?: React.SyntheticEvent | Event,
+  reason?: string
+) => {
+  if (reason === "clickaway") {
+    return;
+  }
+
+  setOpen(false);
+};
 
 useEffect(() =>{
     if(id) {
@@ -52,7 +67,7 @@ const handleInputChange = (event: any) => {
 
 const handleUpdatePost = (data:PostItem) => {
     editPost(data,() =>{
-      toast('Updated successfully');
+      handleClick();
         history('/')
         
     })
@@ -99,7 +114,11 @@ const handleUpdatePost = (data:PostItem) => {
           </Button>
         </CardActions>
         </Card>
-
+    <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+      <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+        Post  successfully updated!
+        </Alert>
+      </Snackbar>;
        </Container>
   )
 }

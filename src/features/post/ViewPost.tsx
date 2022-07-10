@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, Container, Grid, IconButton, Typography } from "@mui/material"
+import { Alert, Button, Card, CardActions, CardContent, Container, Grid, IconButton, Snackbar, Typography } from "@mui/material"
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom"
@@ -19,8 +19,22 @@ import { toast } from "react-toastify";
 
 const ViewPost = () =>{
 const {id} = useParams<{id: any}>();
-//  const [postItem, setPostItem] = useState<PostItem>();
-// const [loading, setLoading] = useState(true);
+const [open, setOpen] = useState(false);
+const handleClick = () => {
+  setOpen(true);
+};
+
+const handleClose = (
+  event?: React.SyntheticEvent | Event,
+  reason?: string
+) => {
+  if (reason === "clickaway") {
+    return;
+  }
+
+  setOpen(false);
+};
+
 const [editMode, setEditMode] = useState(false);
 
 const { postDetail,editPost,deletePost } = usePosts(
@@ -43,9 +57,9 @@ const handleEdit = () => {
     setEditMode(true);
 }
 
-const deleteHandler = (id:number):void => {
-  deletePost(id);
-  toast('record deleted ');
+const deleteHandler = ():void => {
+  deletePost(+id);
+  handleClick();
   history('/');        
 }
 
@@ -66,9 +80,8 @@ const deleteHandler = (id:number):void => {
           <Button size="small" onClick={handleEdit}>
             Edit
           </Button>
-          <Button size="small" onClick={()=> deleteHandler(id)}><IconButton aria-label="delete">
-           <DeleteIcon />
-           </IconButton>
+          <Button size="small" onClick={deleteHandler} >
+           <DeleteIcon  />
          </Button>
           
         </CardActions>
@@ -81,6 +94,12 @@ const deleteHandler = (id:number):void => {
          />}
         </Grid>
      }
+
+<Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+      <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+        Post successfully deleted!
+        </Alert>
+      </Snackbar>;
    </Container>     
     
      

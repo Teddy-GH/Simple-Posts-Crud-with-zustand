@@ -1,7 +1,6 @@
 import {
   Alert,
   Box,
-  Button,
   Container,
   Grid,
   Paper,
@@ -10,9 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
-import endpoints from "../api/endpoints";
+import { Link, useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
 import { PostItem } from "../models/post";
 import { usePosts } from "../store/usePosts";
@@ -54,11 +51,8 @@ const NewPostItem = () => {
 
   const onSubmit = (data: PostItem) => {
     createPost(data, () => {
-      <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-        Post  successfully updated!
-        </Alert>
-      </Snackbar>;
+      handleClick();
+      
       history("/");
     });
   };
@@ -125,6 +119,7 @@ const NewPostItem = () => {
         />
 
         <LoadingButton
+      onClick={handleClick}
           disabled={!isValid}
           loading={isSubmitting}
           type="submit"
@@ -140,6 +135,11 @@ const NewPostItem = () => {
           </Grid>
         </Grid>
       </Box>
+      <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+      <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+        Post  successfully created!
+        </Alert>
+      </Snackbar>;
     </Container>
   );
 };
